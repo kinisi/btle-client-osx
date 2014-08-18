@@ -82,6 +82,11 @@
 @property (retain) NSMutableArray *heartRateMonitors;
 @property (copy) NSString *manufacturer;
 @property (copy) NSString *connected;
+@property (copy) NSString *kinisi_string0;
+@property (copy) NSString *kinisi_string1;
+@property (copy) NSString *kinisi_string2;
+@property (copy) NSString *kinisi_string3;
+
 
 - (IBAction) openScanSheet:(id) sender;
 - (IBAction) closeScanSheet:(id)sender;

@@ -59,12 +59,20 @@
 @synthesize arrayController;
 @synthesize manufacturer;
 @synthesize connected;
+@synthesize kinisi_string0;
+@synthesize kinisi_string1;
+@synthesize kinisi_string2;
+@synthesize kinisi_string3;
 
 #define PULSESCALE 1.2
 #define PULSEDURATION 0.2
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    self.kinisi_string0 = @"k0";
+    self.kinisi_string1 = @"k1";
+    self.kinisi_string2 = @"k2";
+    self.kinisi_string3 = @"k3";
     self.heartRate = 0;
     /* autoConnect = TRUE; */  /* uncomment this line if you want to automatically connect to previosly known peripheral */
     self.heartRateMonitors = [NSMutableArray array];
@@ -287,7 +295,8 @@
  */
 - (void) startScan 
 {
-    [manager scanForPeripheralsWithServices:[NSArray arrayWithObject:[CBUUID UUIDWithString:@"180D"]] options:nil];
+//    [manager scanForPeripheralsWithServices:[NSArray arrayWithObject:[CBUUID UUIDWithString:@"180D"]] options:nil];
+    [manager scanForPeripheralsWithServices:nil options:nil];
 }
 
 /*
@@ -410,19 +419,26 @@
         if ([aService.UUID isEqual:[CBUUID UUIDWithString:@"180D"]]) 
         {
             [aPeripheral discoverCharacteristics:nil forService:aService];
-        }
+        } else
         
         /* Device Information Service */
         if ([aService.UUID isEqual:[CBUUID UUIDWithString:@"180A"]]) 
         {
             [aPeripheral discoverCharacteristics:nil forService:aService];
-        }
+        } else
         
         /* GAP (Generic Access Profile) for Device Name */
         if ( [aService.UUID isEqual:[CBUUID UUIDWithString:CBUUIDGenericAccessProfileString]] )
         {
             [aPeripheral discoverCharacteristics:nil forService:aService];
+        } else
+
+        /* GAP (Generic Access Profile) for Device Name */
+        //if ( [aService.UUID isEqual:[CBUUID UUIDWithString:CBUUIDGenericAccessProfileString]] )
+        {
+            [aPeripheral discoverCharacteristics:nil forService:aService];
         }
+    
     }
 }
 
@@ -457,7 +473,7 @@
                 [aPeripheral writeValue:valData forCharacteristic:aChar type:CBCharacteristicWriteWithResponse];
             }
         }
-    }
+    } else
     
     if ( [service.UUID isEqual:[CBUUID UUIDWithString:CBUUIDGenericAccessProfileString]] )
     {
@@ -470,7 +486,7 @@
                 NSLog(@"Found a Device Name Characteristic");
             }
         }
-    }
+    } else
     
     if ([service.UUID isEqual:[CBUUID UUIDWithString:@"180A"]]) 
     {
@@ -481,6 +497,18 @@
             {
                 [aPeripheral readValueForCharacteristic:aChar];
                 NSLog(@"Found a Device Manufacturer Name Characteristic");
+            }
+        }
+    } else
+
+    {
+        for (CBCharacteristic *aChar in service.characteristics)
+        {
+            /* Read manufacturer name */
+            //if ([aChar.UUID isEqual:[CBUUID UUIDWithString:@"2A29"]])
+            {
+                [aPeripheral readValueForCharacteristic:aChar];
+                NSLog(@"Found an Unknown Characteristic %@", aChar.UUID);
             }
         }
     }
@@ -550,6 +578,34 @@
     {
         self.manufacturer = [[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] autorelease];
         NSLog(@"Manufacturer Name = %@", self.manufacturer);
+    }
+    else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"0000"]])
+    {
+        self.kinisi_string0 = [[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] autorelease];
+        
+        //NSData * value = characteristic.value;
+        NSLog(@"Data Value = %@ %@", characteristic.UUID, characteristic.value);
+    }
+    else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"0001"]])
+    {
+        self.kinisi_string1 = [[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] autorelease];
+        
+        //NSData * value = characteristic.value;
+        NSLog(@"Data Value = %@ %@", characteristic.UUID, characteristic.value);
+    }
+    else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"0002"]])
+    {
+        self.kinisi_string2 = [[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] autorelease];
+        
+        //NSData * value = characteristic.value;
+        NSLog(@"Data Value = %@ %@", characteristic.UUID, characteristic.value);
+    }
+    else if ([characteristic.UUID isEqual:[CBUUID UUIDWithString:@"0003"]])
+    {
+        self.kinisi_string3 = [[[NSString alloc] initWithData:characteristic.value encoding:NSUTF8StringEncoding] autorelease];
+        
+        //NSData * value = characteristic.value;
+        NSLog(@"Data Value = %@ %@", characteristic.UUID, characteristic.value);
     }
 }
 
