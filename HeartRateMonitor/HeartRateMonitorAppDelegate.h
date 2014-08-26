@@ -71,12 +71,16 @@
     // Progress Indicator
     IBOutlet NSButton * indicatorButton;
     IBOutlet NSProgressIndicator *progressIndicator;    
+    IBOutlet NSButton *ssidButton;
+
 }
 
 @property (assign) IBOutlet NSWindow *window;
 @property (assign) IBOutlet NSWindow *scanSheet;
 @property (assign) IBOutlet NSView *heartView;
 @property (assign) IBOutlet NSArrayController *arrayController;
+@property (assign) IBOutlet NSTextField *wpaSSID;
+@property (assign) IBOutlet NSTextField *wpaPwd;
 @property (assign) uint16_t heartRate;
 @property (retain) NSTimer *pulseTimer;
 @property (retain) NSMutableArray *heartRateMonitors;
@@ -92,6 +96,7 @@
 - (IBAction) closeScanSheet:(id)sender;
 - (IBAction) cancelScanSheet:(id)sender;
 - (IBAction) connectButtonPressed:(id)sender;
+- (IBAction) ssidButtonPressed:(id)sender;
 
 - (void) startScan;
 - (void) stopScan;

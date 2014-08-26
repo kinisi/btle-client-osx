@@ -57,12 +57,15 @@
 @synthesize scanSheet;
 @synthesize heartRateMonitors;
 @synthesize arrayController;
+@synthesize wpaSSID;
+@synthesize wpaPwd;
 @synthesize manufacturer;
 @synthesize connected;
 @synthesize kinisi_string0;
 @synthesize kinisi_string1;
 @synthesize kinisi_string2;
 @synthesize kinisi_string3;
+
 
 #define PULSESCALE 1.2
 #define PULSEDURATION 0.2
@@ -198,6 +201,46 @@
     {   /* No outstanding connection, open scan sheet */
         [self openScanSheet:nil];
     }
+}
+
+//inline int min(int a, int b) __attribute__((always_inline));
+//- (int) min_int: (int) a: b (int) b { return a < b ? a : b; }
+//inline extern max(int a, int b) __attribute__((always_inline));
+//inline int max_int(int a, int b) { return a > b ? a : b; }
+
+- (IBAction)ssidButtonPressed:(id)sender
+{
+    NSLog(@"SSID button pressed: %@ %@", wpaSSID.stringValue, wpaPwd.stringValue);
+
+    for(CBService *service in peripheral.services)
+    {
+        if([service.UUID isEqual:[CBUUID UUIDWithString: @"ffffffff-ffff-ffff-ffff-fffffffffff0"]])
+        {
+            for(CBCharacteristic *charac in service.characteristics)
+            {
+                if([charac.UUID isEqual:[CBUUID UUIDWithString:@"0004"]])
+                {
+                    //NOW DO YOUR WRITING/READING AND YOU'LL BE GOOD TO GO
+                    //NSString* str = @"test\0string";
+                    NSString* str = [NSString stringWithFormat:@"%@\0%@", wpaSSID.stringValue, wpaPwd.stringValue];
+                    NSData* data = [str dataUsingEncoding:NSUTF8StringEncoding];
+                    signed long totallen = [data length];
+                    for (int i = 0 ; i < ((([data length]-1)/20)+1) ; i++) {
+                        signed long endlen = 20;
+                        if (totallen < 20) {
+                            endlen = totallen;
+                        }
+                        totallen = totallen - 20;
+                        NSData *fPart = [data subdataWithRange:NSMakeRange(i*20, endlen)];
+                        [peripheral writeValue:fPart forCharacteristic:charac type:CBCharacteristicWriteWithResponse];
+                    }
+                    NSData* dataend = [@"\0\0\0\0" dataUsingEncoding:NSUTF8StringEncoding];
+                    [peripheral writeValue:dataend forCharacteristic:charac type:CBCharacteristicWriteWithResponse];
+                }
+            }
+        }
+    }
+    
 }
 
 #pragma mark - Heart Rate Data
@@ -510,8 +553,20 @@
                 [aPeripheral readValueForCharacteristic:aChar];
                 NSLog(@"Found an Unknown Characteristic %@", aChar.UUID);
             }
+            
+            if ([aChar.UUID isEqual:[CBUUID UUIDWithString:@"0004"]])
+            {
+                NSLog(@"Found write, button");
+                [ssidButton setEnabled:TRUE];
+            }
         }
     }
+}
+
+- (void) peripheral: (CBPeripheral*) aPeripheral didWriteValueForCharacteristic: (CBCharacteristic*) characteristic error:(NSError*)error
+{
+    
+    NSLog(@"Error returned %@", error);
 }
 
 /*
@@ -607,6 +662,7 @@
         //NSData * value = characteristic.value;
         NSLog(@"Data Value = %@ %@", characteristic.UUID, characteristic.value);
     }
+
 }
 
 @end

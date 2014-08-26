@@ -365,6 +365,24 @@
                             <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
                         </textFieldCell>
                     </textField>
+                    <textField verticalHuggingPriority="750" id="hgG-7J-aj0">
+                        <rect key="frame" x="22" y="237" width="65" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="ssid" id="AMc-Zg-YY0">
+                            <font key="font" metaFont="system" size="24"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
+                    <textField verticalHuggingPriority="750" id="KQw-UA-zd0">
+                        <rect key="frame" x="103" y="237" width="65" height="29"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" alignment="left" title="pwd" id="9Vl-F6-Pct">
+                            <font key="font" metaFont="system" size="24"/>
+                            <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
+                        </textFieldCell>
+                    </textField>
                     <textField verticalHuggingPriority="750" id="dub-Jd-7Dw">
                         <rect key="frame" x="214" y="183" width="65" height="29"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -487,6 +505,20 @@ DQ
                             <action selector="connectButtonPressed:" target="494" id="656"/>
                         </connections>
                     </button>
+                    <button verticalHuggingPriority="750" id="mnV-tl-PhR" userLabel="Push Button">
+                        <rect key="frame" x="12" y="152" width="96" height="32"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="push" title="Update WPA" bezelStyle="rounded" alignment="center" enabled="NO" state="on" borderStyle="border" inset="2" id="Zyx-ms-Bhk">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="titleBar" size="12"/>
+                            <string key="keyEquivalent" base64-UTF8="YES">
+DQ
+</string>
+                        </buttonCell>
+                        <connections>
+                            <action selector="ssidButtonPressed:" target="494" id="EKx-vc-rpd"/>
+                        </connections>
+                    </button>
                     <button hidden="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" id="662">
                         <rect key="frame" x="94" y="15" width="39" height="38"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -599,7 +631,10 @@ Gw
                 <outlet property="indicatorButton" destination="662" id="664"/>
                 <outlet property="progressIndicator" destination="661" id="665"/>
                 <outlet property="scanSheet" destination="557" id="572"/>
+                <outlet property="ssidButton" destination="Zyx-ms-Bhk" id="5l4-cQ-en7"/>
                 <outlet property="window" destination="371" id="532"/>
+                <outlet property="wpaPwd" destination="KQw-UA-zd0" id="A9A-zL-FHf"/>
+                <outlet property="wpaSSID" destination="hgG-7J-aj0" id="G9Y-Qc-Yob"/>
             </connections>
         </customObject>
         <arrayController objectClassName="CBPeripheral" id="570">
